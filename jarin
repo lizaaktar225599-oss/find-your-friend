@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Your Real Friend ✨💖</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            fredoka: ['Fredoka', 'sans-serif'],
+            quicksand: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            pinkish: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+            }
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-10px) rotate(4deg)' },
+            },
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '20%, 60%': { transform: 'translateX(-6px)' },
+              '40%, 80%': { transform: 'translateX(6px)' },
+            },
+            popIn: {
+              '0%': { transform: 'scale(0.8)', opacity: '0' },
+              '100%': { transform: 'scale(1)', opacity: '1' },
+            },
+            bounceSoft: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' }
+            }
+          },
+          animation: {
+            float: 'float 3.5s ease-in-out infinite',
+            'float-delayed': 'float 3.5s ease-in-out 1.8s infinite',
+            shake: 'shake 0.5s ease-in-out infinite',
+            popIn: 'popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+            bounceSoft: 'bounceSoft 2s ease-in-out infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #ffeef4;
+      background-image: radial-gradient(#f472b6 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      overflow-x: hidden;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(14px);
+      border: 3px solid #fbcfe8;
+      box-shadow: 0 18px 40px rgba(244, 63, 94, 0.15);
+    }
+
+    .sticker-btn {
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .sticker-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 22px rgba(244, 63, 94, 0.2);
+    }
+
+    .sticker-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .speech-bubble-left {
+      position: relative;
+      background: #ffffff;
+      border: 2px solid #f43f5e;
+      border-radius: 18px;
+    }
+    .speech-bubble-left::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 20px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+      display: block;
+      width: 0;
+    }
+    .speech-bubble-left::before {
+      content: '';
+      position: absolute;
+      bottom: -13px;
+      left: 19px;
+      border-width: 11px 11px 0;
+      border-style: solid;
+      border-color: #f43f5e transparent;
+      display: block;
+      width: 0;
+    }
+
+    .speech-bubble-right {
+      position: relative;
+      background: #fef08a;
+      border: 2px solid #eab308;
+      border-radius: 18px;
+    }
+    .speech-bubble-right::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 20px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #fef08a transparent;
+      display: block;
+      width: 0;
+    }
+    .speech-bubble-right::before {
+      content: '';
+      position: absolute;
+      bottom: -13px;
+      right: 19px;
+      border-width: 11px 11px 0;
+      border-style: solid;
+      border-color: #eab308 transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* Tear Drop Animation */
+    .tear-drop {
+      position: absolute;
+      width: 7px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: tearFall 1.2s infinite linear;
+    }
+
+    @keyframes tearFall {
+      0% { opacity: 1; transform: translateY(0) scale(0.8); }
+      100% { opacity: 0; transform: translateY(30px) scale(1.2); }
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #ffe4e6; }
+    ::-webkit-scrollbar-thumb { background: #fda4af; border-radius: 10px; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-700 flex flex-col justify-between relative selection:bg-pink-300 selection:text-pink-900">
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-8 left-6 text-4xl sm:text-5xl animate-float opacity-80">🐱</div>
+    <div class="absolute top-1/4 right-8 text-4xl sm:text-5xl animate-float-delayed opacity-80">⚡</div>
+    <div class="absolute bottom-1/3 left-10 text-4xl sm:text-5xl animate-float opacity-80">🌸</div>
+    <div class="absolute top-1/2 right-12 text-3xl sm:text-4xl animate-float-delayed opacity-80">🎀</div>
+    <div class="absolute bottom-12 left-1/4 text-4xl sm:text-5xl animate-float-delayed opacity-80">📱</div>
+    <div class="absolute bottom-8 right-10 text-4xl sm:text-5xl animate-float opacity-80">🔥</div>
+  </div>
+
+  <header class="w-full text-center pt-5 pb-2 z-10 px-4 relative">
+    <div class="max-w-md mx-auto flex items-center justify-between mb-2">
+      <!-- Language Selector Button -->
+      <button onclick="toggleLanguage()" class="bg-white/90 border-2 border-pink-300 text-pink-600 font-bold px-3 py-1.5 rounded-full text-xs shadow-sm flex items-center gap-1.5 hover:bg-pink-50 transition">
+        <span>🌐</span>
+        <span id="lang-btn-text">Language: EN</span>
+      </button>
+
+      <!-- Settings Hub Button -->
+      <button onclick="openSettingsModal()" class="bg-white/90 border-2 border-pink-300 text-pink-600 font-bold px-3 py-1.5 rounded-full text-xs shadow-sm flex items-center gap-1.5 hover:bg-pink-50 transition">
+        <span>⚙️</span>
+        <span id="settings-btn-text">Quiz Hub</span>
+      </button>
+    </div>
+
+    <div class="inline-flex items-center gap-2 bg-white/90 px-4 py-1 rounded-full border-2 border-pink-200 shadow-sm mb-1">
+      <span class="animate-bounce">⚡</span>
+      <span id="header-badge" class="text-xs sm:text-sm font-bold text-pink-500 uppercase tracking-wider font-fredoka">10 Questions Bestie Test ⚡</span>
+      <span class="animate-bounce">🐱</span>
+    </div>
+
+    <h1 id="header-title" class="text-3xl sm:text-4xl font-extrabold text-pink-600 font-fredoka drop-shadow-sm">
+      Find Your Real Friend ⚡💖
+    </h1>
+    <p id="header-subtitle" class="text-pink-400 font-semibold text-xs sm:text-sm mt-1">
+      Answer 10 questions, share secret code & test real friendship loyalty! 📸✨
+    </p>
+  </header>
+
+  <main class="w-full max-w-md mx-auto px-4 py-2 z-10 flex-grow flex items-center justify-center">
+
+    <!-- VIEW 0: HOME SELECTION -->
+    <div id="view-home" class="w-full glass-card rounded-3xl p-6 sm:p-8 text-center transition-all duration-300">
+      
+      <!-- Cute Cat & Pokémon Dual SVG Illustration -->
+      <div class="relative w-36 h-32 mx-auto mb-3 bg-pink-100 rounded-2xl flex items-center justify-around border-4 border-pink-300 shadow-inner p-2 overflow-hidden">
+        <!-- Pokémon SVG -->
+        <svg class="w-14 h-14 animate-float" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="28" fill="#facc15" />
+          <circle cx="36" cy="54" r="5" fill="#ef4444" />
+          <circle cx="64" cy="54" r="5" fill="#ef4444" />
+          <circle cx="42" cy="46" r="3.5" fill="#1e293b" />
+          <circle cx="58" cy="46" r="3.5" fill="#1e293b" />
+          <polygon points="25,35 15,10 32,25" fill="#facc15" />
+          <polygon points="75,35 85,10 68,25" fill="#facc15" />
+        </svg>
+
+        <!-- Cat SVG -->
+        <svg class="w-14 h-14 animate-float-delayed" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="28" fill="#f43f5e" />
+          <polygon points="28,30 20,12 38,22" fill="#f43f5e" />
+          <polygon points="72,30 80,12 62,22" fill="#f43f5e" />
+          <circle cx="40" cy="46" r="4" fill="#ffffff" />
+          <circle cx="60" cy="46" r="4" fill="#ffffff" />
+          <circle cx="40" cy="46" r="2" fill="#1e293b" />
+          <circle cx="60" cy="46" r="2" fill="#1e293b" />
+          <!-- Cat Whiskers -->
+          <line x1="20" y1="52" x2="35" y2="52" stroke="#ffffff" stroke-width="2" />
+          <line x1="80" y1="52" x2="65" y2="52" stroke="#ffffff" stroke-width="2" />
+        </svg>
+      </div>
+
+      <h2 id="home-welcome-title" class="text-2xl font-bold text-pink-600 font-fredoka mb-1">Welcome Bestie! 💕</h2>
+      <p id="home-welcome-desc" class="text-slate-600 text-xs sm:text-sm mb-5 leading-relaxed">
+        Answer 10 fun questions to test if your bestie is real or fake! ✨
+      </p>
+
+      <!-- Language Switcher Box -->
+      <div class="bg-pink-50 p-2.5 rounded-2xl border border-pink-200 mb-4 flex items-center justify-between">
+        <span id="lang-select-label" class="text-xs font-bold text-pink-600">Language / ভাষা:</span>
+        <div class="flex gap-2">
+          <button id="lang-btn-en" onclick="setLanguage('en')" class="px-3 py-1 rounded-xl text-xs font-bold bg-pink-500 text-white shadow-sm">English</button>
+          <button id="lang-btn-bn" onclick="setLanguage('bn')" class="px-3 py-1 rounded-xl text-xs font-bold bg-white text-pink-600 border border-pink-300">বাংলা/Banglish</button>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button onclick="switchView('view-create-init')" class="w-full sticker-btn bg-gradient-to-r from-pink-400 to-rose-400 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg border-2 border-pink-300 text-sm flex items-center justify-center gap-2">
+          <span id="btn-create-quiz">✨ Create My 10-Q Quiz</span>
+          <span class="text-base">👑</span>
+        </button>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-pink-200"></div>
+          <span id="home-or-label" class="flex-shrink mx-3 text-pink-400 font-bold text-xs">OR HAVE A SECRET CODE?</span>
+          <div class="flex-grow border-t border-pink-200"></div>
+        </div>
+
+        <button onclick="switchView('view-paste-code')" class="w-full sticker-btn bg-white hover:bg-pink-50 text-pink-600 font-bold py-3 px-6 rounded-2xl shadow-sm border-2 border-pink-300 text-xs sm:text-sm flex items-center justify-center gap-2">
+          <span id="btn-take-quiz">🔑 Take Bestie's Quiz</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 1: CREATOR SETUP -->
+    <div id="view-create-init" class="w-full glass-card rounded-3xl p-6 sm:p-8 hidden transition-all duration-300">
+      <div class="text-center mb-4">
+        <span class="text-4xl">👑⚡</span>
+        <h2 id="create-init-title" class="text-2xl font-bold text-pink-600 font-fredoka mt-1">Create Your 10-Q Quiz</h2>
+        <p id="create-init-subtitle" class="text-pink-400 text-xs font-semibold">Enter your details to generate secret link!</p>
+      </div>
+
+      <form onsubmit="startCreatorQuiz(event)" class="space-y-3.5">
+        <div>
+          <label id="lbl-host-name" class="block text-xs font-bold text-slate-700 mb-1 ml-1">Your Cute Name ✨</label>
+          <input type="text" id="host-name" required placeholder="e.g. Angel, Cutie, Sophia..." 
+            class="w-full px-4 py-2.5 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-slate-700 bg-white/80 font-semibold text-xs sm:text-sm" />
+        </div>
+
+        <div>
+          <label id="lbl-host-ig" class="block text-xs font-bold text-slate-700 mb-1 ml-1">Your Instagram Username 📸</label>
+          <div class="relative">
+            <span class="absolute left-4 top-2.5 text-pink-400 font-bold text-sm">@</span>
+            <input type="text" id="host-ig" required placeholder="your_insta_handle" 
+              class="w-full pl-9 pr-4 py-2.5 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-slate-700 bg-white/80 font-semibold text-xs sm:text-sm" />
+          </div>
+          <p id="lbl-host-ig-desc" class="text-[11px] text-pink-400 mt-1 ml-1">Friends will send score results straight to your IG DM!</p>
+        </div>
+
+        <button type="submit" class="w-full sticker-btn bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl shadow-md border-2 border-pink-300 text-xs sm:text-sm mt-2 flex items-center justify-center gap-2">
+          <span id="btn-start-questions">Start Answering 10 Questions ➔</span>
+        </button>
+
+        <button type="button" onclick="switchView('view-home')" class="w-full text-xs text-pink-500 hover:underline font-bold text-center pt-1">
+          ← <span id="btn-back-home-1">Back to Home</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- VIEW 2: QUIZ WIZARD -->
+    <div id="view-quiz-wizard" class="w-full glass-card rounded-3xl p-5 sm:p-7 hidden transition-all duration-300">
+      
+      <!-- 10 QUESTIONS TICK / CROSS STATUS TRACKER TOP BAR -->
+      <div class="mb-4 bg-pink-50/80 p-2.5 rounded-2xl border border-pink-200">
+        <div class="flex justify-between items-center text-xs font-bold text-pink-600 mb-2">
+          <span id="quiz-step-label">Question 1 of 10</span>
+          <span id="quiz-progress-text">10%</span>
+        </div>
+
+        <!-- 10 BADGE INDICATORS (1 to 10) -->
+        <div id="tracker-badges-container" class="grid grid-cols-10 gap-1 text-center">
+          <!-- Dynamically populated 1 to 10 tick/cross/pending badges -->
+        </div>
+      </div>
+
+      <!-- Question Stage -->
+      <div class="text-center mb-4">
+        <div id="q-pokemon-stage" class="relative w-24 h-24 mx-auto mb-2 bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center shadow-inner overflow-hidden">
+          <!-- Dynamic SVG graphic -->
+        </div>
+
+        <h3 id="q-title" class="text-base sm:text-lg font-bold text-pink-600 font-fredoka leading-tight min-h-[48px] flex items-center justify-center">
+          Question Title
+        </h3>
+        <p id="q-subtitle" class="text-xs text-slate-500 mt-1 font-semibold">Select preference below:</p>
+      </div>
+
+      <!-- Options Container -->
+      <div id="options-container" class="space-y-2">
+        <!-- Dynamic Option Buttons -->
+      </div>
+    </div>
+
+    <!-- VIEW 3: CREATOR LINK GENERATED RESULT -->
+    <div id="view-created-code" class="w-full glass-card rounded-3xl p-6 sm:p-8 text-center hidden transition-all duration-300">
+      <div class="text-5xl mb-2 animate-bounce">🎉⚡</div>
+      <h2 id="created-title" class="text-2xl font-bold text-pink-600 font-fredoka">Quiz Created Successfully! 💕</h2>
+      <p id="created-desc" class="text-slate-600 text-xs sm:text-sm mt-1 mb-4">
+        Share this Secret Link with your friends to test their loyalty!
+      </p>
+
+      <div class="bg-pink-50 p-3.5 rounded-2xl border-2 border-dashed border-pink-300 mb-4">
+        <p id="created-code-lbl" class="text-xs text-pink-500 font-bold uppercase tracking-wider mb-1">Your Secret Bestie Code Link</p>
+        <textarea id="generated-link-box" readonly class="w-full bg-white text-pink-700 text-xs font-mono p-2.5 rounded-xl border border-pink-200 resize-none h-20 text-center font-bold focus:outline-none"></textarea>
+      </div>
+
+      <button onclick="copyGeneratedLink()" class="w-full sticker-btn bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md border-2 border-pink-300 text-xs sm:text-sm mb-3 flex items-center justify-center gap-2">
+        <span id="copy-btn-text">📋 Copy Secret Code Link</span>
+      </button>
+
+      <button onclick="switchView('view-home')" class="text-xs text-pink-500 hover:underline font-bold">
+        🏠 <span id="btn-back-home-2">Back to Home</span>
+      </button>
+    </div>
+
+    <!-- VIEW 4: PASTE CODE / TAKER INIT -->
+    <div id="view-paste-code" class="w-full glass-card rounded-3xl p-6 sm:p-8 hidden transition-all duration-300">
+      <div class="text-center mb-4">
+        <span class="text-4xl">🔑⚡</span>
+        <h2 id="paste-title" class="text-2xl font-bold text-pink-600 font-fredoka mt-1">Take Bestie's Quiz</h2>
+        <p id="paste-subtitle" class="text-pink-400 text-xs font-semibold">Paste secret code or link to answer 10 questions!</p>
+      </div>
+
+      <form onsubmit="startTakerQuiz(event)" class="space-y-3">
+        <div>
+          <label id="lbl-secret-code" class="block text-xs font-bold text-slate-700 mb-1 ml-1">Paste Secret Code or Link 🔗</label>
+          <textarea id="input-secret-code" required rows="2" placeholder="Paste link or code here..." 
+            class="w-full p-2.5 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-xs font-mono text-slate-700 bg-white/80"></textarea>
+        </div>
+
+        <div>
+          <label id="lbl-taker-name" class="block text-xs font-bold text-slate-700 mb-1 ml-1">Your Cute Name ✨</label>
+          <input type="text" id="taker-name" required placeholder="Your cute name..." 
+            class="w-full px-4 py-2 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-slate-700 bg-white/80 font-semibold text-xs sm:text-sm" />
+        </div>
+
+        <div>
+          <label id="lbl-taker-ig" class="block text-xs font-bold text-slate-700 mb-1 ml-1">Your Instagram Username 📸</label>
+          <div class="relative">
+            <span class="absolute left-4 top-2 text-pink-400 font-bold text-sm">@</span>
+            <input type="text" id="taker-ig" required placeholder="your_insta_handle" 
+              class="w-full pl-9 pr-4 py-2 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-slate-700 bg-white/80 font-semibold text-xs sm:text-sm" />
+          </div>
+        </div>
+
+        <button type="submit" class="w-full sticker-btn bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl shadow-md border-2 border-pink-300 text-xs sm:text-sm mt-2 flex items-center justify-center gap-2">
+          <span id="btn-start-guessing">Start Guessing 10 Questions ➔</span>
+        </button>
+
+        <button type="button" onclick="switchView('view-home')" class="w-full text-xs text-pink-500 hover:underline font-bold text-center pt-1">
+          ← <span id="btn-back-home-3">Back to Home</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- VIEW 5: TAKER RESULT & CAT + POKÉMON DRAMATIC DIALOGUE SCENE -->
+    <div id="view-final-results" class="w-full glass-card rounded-3xl p-5 sm:p-7 text-center hidden transition-all duration-300">
+      
+      <!-- TOP 10 QUESTIONS TICK/CROSS BADGES SUMMARY -->
+      <div class="bg-pink-50 p-2.5 rounded-2xl border border-pink-200 mb-3">
+        <p id="result-badges-title" class="text-[11px] font-bold text-pink-600 uppercase tracking-wider mb-1.5">10 Questions Scorecard (✓ Match / ✗ Mismatch)</p>
+        <div id="final-badges-container" class="grid grid-cols-10 gap-1 text-center">
+          <!-- 1 to 10 result badges -->
+        </div>
+      </div>
+
+      <h2 id="result-title" class="text-xl sm:text-2xl font-bold text-pink-600 font-fredoka">Match Score: 8/10!</h2>
+      <p id="result-desc" class="text-slate-600 text-xs sm:text-sm mt-0.5 mb-3">You guys are soulmates! 👯‍♀️</p>
+
+      <!-- DRAMATIC CAT & POKÉMON CONVERSATION STAGE (Appears on low score / mistakes) -->
+      <div id="cat-pokemon-dialogue-stage" class="hidden bg-gradient-to-b from-rose-50 to-pink-100 border-2 border-rose-300 p-3.5 rounded-2xl mb-4 text-left shadow-sm animate-popIn">
+        
+        <p class="text-[11px] font-bold text-rose-600 uppercase tracking-wider mb-2 flex items-center gap-1">
+          <span>🐱⚡ DRAMATIC FRIENDSHIP DIALOGUE</span>
+        </p>
+
+        <!-- Conversation Bubble 1: Angry/Dramatic Cat -->
+        <div class="flex items-start gap-2 mb-3">
+          <!-- Cat SVG -->
+          <div class="relative w-12 h-12 flex-shrink-0 bg-white rounded-full border-2 border-rose-400 flex items-center justify-center shadow-sm overflow-hidden">
+            <svg class="w-10 h-10 animate-shake" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="30" fill="#f43f5e" />
+              <polygon points="28,30 20,12 38,22" fill="#f43f5e" />
+              <polygon points="72,30 80,12 62,22" fill="#f43f5e" />
+              <!-- Angry eyes -->
+              <line x1="32" y1="40" x2="44" y2="46" stroke="#ffffff" stroke-width="3" />
+              <line x1="68" y1="40" x2="56" y2="46" stroke="#ffffff" stroke-width="3" />
+              <path d="M 40 58 Q 50 50 60 58" stroke="#ffffff" stroke-width="3" fill="none" />
+            </svg>
+          </div>
+          <!-- Cat Speech Bubble -->
+          <div class="speech-bubble-left p-2.5 text-xs font-extrabold text-rose-700 leading-snug flex-grow">
+            "Tumi fail korso!! Jaw tumi!! 😾💔"
+          </div>
+        </div>
+
+        <!-- Conversation Bubble 2: Real Friend Pokémon -->
+        <div class="flex items-start gap-2 flex-row-reverse">
+          <!-- Pokémon SVG -->
+          <div class="relative w-12 h-12 flex-shrink-0 bg-yellow-100 rounded-full border-2 border-yellow-400 flex items-center justify-center shadow-sm overflow-hidden">
+            <svg class="w-10 h-10 animate-bounceSoft" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="28" fill="#facc15" />
+              <circle cx="36" cy="54" r="5" fill="#ef4444" />
+              <circle cx="64" cy="54" r="5" fill="#ef4444" />
+              <circle cx="42" cy="46" r="3.5" fill="#1e293b" />
+              <circle cx="58" cy="46" r="3.5" fill="#1e293b" />
+              <path d="M 44 58 Q 50 64 56 58" stroke="#1e293b" stroke-width="2.5" fill="none" />
+            </svg>
+          </div>
+          <!-- Pokémon Speech Bubble -->
+          <div class="speech-bubble-right p-2.5 text-xs font-extrabold text-amber-900 leading-snug flex-grow">
+            "Sorry... kintu AMI-i tomar real friend!! Don't cry bestie! 🥺💖⚡"
+          </div>
+        </div>
+
+        <!-- Begging Action button inside dramatic box -->
+        <button onclick="begForForgiveness()" class="w-full mt-3 bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm border border-rose-300">
+          <span>🙏 Beg Bestie Not To Block You! 🥺</span>
+        </button>
+      </div>
+
+      <!-- Summary Accordion / List -->
+      <div class="bg-pink-50 p-3 rounded-2xl border-2 border-pink-200 mb-3 text-left text-xs text-slate-700 space-y-1">
+        <p id="summary-header" class="font-bold text-pink-600 text-xs border-b border-pink-200 pb-1">Answers Comparison Breakdown:</p>
+        <div id="summary-list" class="space-y-1 max-h-32 overflow-y-auto pr-1">
+          <!-- Summary items dynamically inserted -->
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="space-y-2">
+        <button onclick="sendToInstagram()" class="w-full sticker-btn bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white font-bold py-3 px-5 rounded-2xl shadow-lg border-2 border-pink-300 text-xs sm:text-sm flex items-center justify-center gap-2">
+          <span> Send Results to @<span id="target-ig-handle">host</span> on Instagram 📸</span>
+        </button>
+
+        <button onclick="copyResultsSummary()" class="w-full sticker-btn bg-white hover:bg-pink-50 text-pink-600 font-bold py-2.5 px-5 rounded-2xl shadow-sm border-2 border-pink-300 text-xs flex items-center justify-center gap-2">
+          <span id="copy-summary-btn-text">📋 Copy DM Summary Text</span>
+        </button>
+
+        <button onclick="switchView('view-home')" class="w-full text-xs text-pink-500 hover:underline font-bold pt-1">
+          🏠 <span id="btn-back-home-4">Play Again / Create Your Own Quiz</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: SETTINGS & QUIZ HUB -->
+  <div id="modal-settings" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-card w-full max-w-sm rounded-3xl p-6 relative animate-float">
+      <button onclick="closeSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-pink-600 text-xl font-bold">✕</button>
+
+      <div class="text-center mb-4">
+        <span class="text-3xl">⚙️⚡</span>
+        <h3 id="settings-title" class="text-xl font-bold text-pink-600 font-fredoka mt-1">Quiz Hub & Settings</h3>
+        <p id="settings-subtitle" class="text-xs text-slate-500">Manage saved quizzes or switch language!</p>
+      </div>
+
+      <div class="space-y-3 mb-4">
+        <p id="lbl-my-quizzes" class="text-xs font-bold text-pink-600 uppercase tracking-wider">My Saved Quizzes</p>
+        <div id="saved-quizzes-list" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+          <!-- Saved Quizzes injected here -->
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="switchView('view-create-init'); closeSettingsModal();" class="w-full sticker-btn bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
+          <span>➕ Create Another New Quiz</span>
+        </button>
+
+        <button onclick="clearSavedQuizzes()" class="w-full text-xs text-rose-500 hover:underline font-bold py-1">
+          🗑️ Clear Saved Quizzes History
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast-msg" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-5 py-2 rounded-full text-xs font-bold shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2">
+    <span>✨ Message Copied!</span>
+  </div>
+
+  <footer class="w-full text-center py-3 text-xs font-bold text-pink-400 z-10">
+    Made with 💕 for Besties Everywhere • Don't Block Me! 🙈
+  </footer>
+
+  <script>
+    /* TRANSLATION DICTIONARY */
+    const TRANSLATIONS = {
+      en: {
+        langBtn: "Language: EN",
+        settingsBtn: "Quiz Hub",
+        badge: "10 Questions Bestie Test ⚡",
+        title: "Find Your Real Friend ⚡💖",
+        subtitle: "Answer 10 questions, share secret code & test real friendship loyalty! 📸✨",
+        welcomeTitle: "Welcome Bestie! 💕",
+        welcomeDesc: "Answer 10 fun questions to test if your bestie is real or fake! ✨",
+        createBtn: "✨ Create My 10-Q Quiz",
+        takeBtn: "🔑 Take Bestie's Quiz",
+        orLabel: "OR HAVE A SECRET CODE?",
+        createTitle: "Create Your 10-Q Quiz",
+        createSub: "Enter your details to generate secret link!",
+        lblHostName: "Your Cute Name ✨",
+        lblHostIg: "Your Instagram Username 📸",
+        lblHostIgDesc: "Friends will send score results straight to your IG DM!",
+        startBtn: "Start Answering 10 Questions ➔",
+        backHome: "Back to Home",
+        createdTitle: "Quiz Created Successfully! 💕",
+        createdDesc: "Share this Secret Link with your friends to test their loyalty!",
+        copyBtn: "📋 Copy Secret Code Link",
+        pasteTitle: "Take Bestie's Quiz",
+        pasteSub: "Paste secret code or link to answer 10 questions!",
+        startGuessBtn: "Start Guessing 10 Questions ➔",
+        summaryHeader: "Answers Comparison Breakdown:",
+        copySummaryBtn: "📋 Copy DM Summary Text",
+        settingsTitle: "Quiz Hub & Settings",
+        myQuizzes: "My Saved Quizzes"
+      },
+      bn: {
+        langBtn: "ভাষা: বাংলা",
+        settingsBtn: "কুইজ হাব",
+        badge: "১০ টি প্রশ্নের আসল বেস্টি টেস্ট ⚡",
+        title: "Find Your Real Friend ⚡💖",
+        subtitle: "১০টি প্রশ্নের উত্তর দাও, সিক্রেট কোড শেয়ার করো আর আসল বন্ধুর পরীক্ষা নাও! 📸✨",
+        welcomeTitle: "স্বাগতম বেস্টি! 💕",
+        welcomeDesc: "১০টি প্রশ্নের উত্তর দিয়ে পরীক্ষা করে নাও তোমার বেস্টি আসল নাকি ফেইক! ✨",
+        createBtn: "✨ আমার ১০টি প্রশ্নের কুইজ বানাই",
+        takeBtn: "🔑 বন্ধুর ১০টি কুইজ খেলি",
+        orLabel: "অথবা সিক্রেট কোড আছে?",
+        createTitle: "১০ প্রশ্নের কুইজ তৈরি করো",
+        createSub: "প্রথমে তোমার নাম ও ইন্সটা দাও!",
+        lblHostName: "তোমার কিউট নাম ✨",
+        lblHostIg: "তোমার ইন্সটাগ্রাম ইউজারনেম 📸",
+        lblHostIgDesc: "বন্ধুরা কুইজের ১০টি রেজাল্ট সোজা তোমার ইন্সটা ডিএম-এ পাঠাবে!",
+        startBtn: "১০টি প্রশ্নের উত্তর দেওয়া শুরু করো ➔",
+        backHome: "হোমে ফিরে যাও",
+        createdTitle: "কুইজ সফলভাবে তৈরি হয়েছে! 💕",
+        createdDesc: "এই সিক্রেট লিংকটি তোমার বন্ধুদের সাথে শেয়ার করো!",
+        copyBtn: "📋 সিক্রেট লিংক কপি করো",
+        pasteTitle: "বন্ধুর ১০ প্রশ্নের কুইজ খেলো",
+        pasteSub: "নিচে বন্ধুর সিক্রেট কোড পেস্ট করো!",
+        startGuessBtn: "১০টি উত্তর গেস করা শুরু করো ➔",
+        summaryHeader: "১০টি উত্তরের বিবরণ:",
+        copySummaryBtn: "📋 ডাইরেক্ট মেসেজ টেক্সট কপি করো",
+        settingsTitle: "কুইজ হাব ও সেটিংস",
+        myQuizzes: "আমার সেভ করা কুইজসমূহ"
+      }
+    };
+
+    let currentLang = 'en';
+
+    /* 10 QUESTIONS POOL */
+    const QUESTIONS = [
+      {
+        id: "color",
+        graphic: "jigglypuff",
+        title_en: "1. Favorite Vibe Color? 🎨",
+        title_bn: "১. প্রিয় কালার কোনটি? 🎨",
+        options_en: [
+          { text: "Ocean Blue 💙 (Squirtle 🌊)", val: "Ocean Blue 💙" },
+          { text: "Midnight Black 🖤 (Gengar 👻)", val: "Midnight Black 🖤" },
+          { text: "Pastel Pink 💖 (Jigglypuff 🌸)", val: "Pastel Pink 💖" },
+          { text: "Spark Yellow ⚡ (Pikachu ⚡)", val: "Spark Yellow ⚡" }
+        ],
+        options_bn: [
+          { text: "আকাশী নীল 💙 (স্কোয়ার্টল 🌊)", val: "Ocean Blue 💙" },
+          { text: "কালো 🖤 (গেনগার 👻)", val: "Midnight Black 🖤" },
+          { text: "গোলাপী 💖 (জিগলিফাফ 🌸)", val: "Pastel Pink 💖" },
+          { text: "হলুদ ⚡ (পিকাচু ⚡)", val: "Spark Yellow ⚡" }
+        ]
+      },
+      {
+        id: "exam",
+        graphic: "snorlax",
+        title_en: "2. When do you study for Exams? 📚⚡",
+        title_bn: "২. পরীক্ষার পড়াশোনা কখন করো? 📚⚡",
+        options_en: [
+          { text: "1 Hour Before Exam 🚨 (Pikachu Panic ⚡)", val: "1 Hour Before 🚨" },
+          { text: "Night Before Exam 🌙 (Gengar Night 👻)", val: "Night Before 🌙" },
+          { text: "1 Month Earlier 🤓 (Bulbasaur Scholar 🍃)", val: "1 Month Earlier 🤓" },
+          { text: "Sleeping Instead 💤 (Snorlax Style 😴)", val: "Sleeping Instead 💤" }
+        ],
+        options_bn: [
+          { text: "পরীক্ষার ১ ঘণ্টা আগে 🚨 (পিকাচু প্যানিক ⚡)", val: "1 Hour Before 🚨" },
+          { text: "পরীক্ষার আগের রাতে 🌙 (গেনগার নাইট 👻)", val: "Night Before 🌙" },
+          { text: "১ মাস আগেই পড়ে শেষ 🤓 (পড়ুয়া 🍃)", val: "1 Month Earlier 🤓" },
+          { text: "পড়া বাদ দিয়ে ঘুম 💤 (স্নোরল্যাক্স 😴)", val: "Sleeping Instead 💤" }
+        ]
+      },
+      {
+        id: "activity",
+        graphic: "snorlax",
+        title_en: "3. Ultimate Daily Activity? 💤",
+        title_bn: "৩. সবচেয়ে পছন্দের ডেইলি অ্যাক্টিভিটি? 💤",
+        options_en: [
+          { text: "Sleeping 24/7 😴 (Snorlax 💤)", val: "Sleeping 😴" },
+          { text: "Gossiping & Tea 🗣️☕ (Jigglypuff 🎤)", val: "Gossiping 🗣️" },
+          { text: "Scrolling Reels All Day 📱 (Rotom 📱)", val: "Scrolling Reels 📱" },
+          { text: "Online Shopping 🛍️ (Meowth 👾)", val: "Shopping 🛍️" }
+        ],
+        options_bn: [
+          { text: "দিনরাত ঘুমানো 😴 (স্নোরল্যাক্স 💤)", val: "Sleeping 😴" },
+          { text: "গসিপ ও চা আড্ডা 🗣️☕ (জিগলিফাফ 🎤)", val: "Gossiping 🗣️" },
+          { text: "রিলস স্ক্রোল করা 📱 (রোটম 📱)", val: "Scrolling Reels 📱" },
+          { text: "শপিং করা 🛍️ (মিয়াউথ 👾)", val: "Shopping 🛍️" }
+        ]
+      },
+      {
+        id: "food",
+        graphic: "charmander",
+        title_en: "4. Ultimate Food Craving? 🍛😋",
+        title_bn: "৪. সবচেয়ে পছন্দের খাবার কোনটি? 🍛😋",
+        options_en: [
+          { text: "Hot Biryani 🍛 (Charizard 🔥)", val: "Biryani 🍛" },
+          { text: "Spicy Fuchka 😋 (Gengar 🌶️)", val: "Fuchka 😋" },
+          { text: "Cheesy Pizza 🍕 (Munchlax 🍕)", val: "Pizza 🍕" },
+          { text: "Spicy Ramen 🍜 (Squirtle 🍜)", val: "Spicy Ramen 🍜" }
+        ],
+        options_bn: [
+          { text: "গরম বিরিয়ানি 🍛 (চারিজার্ড 🔥)", val: "Biryani 🍛" },
+          { text: "ঝাল ফুচকা 😋 (গেনগার 🌶️)", val: "Fuchka 😋" },
+          { text: "চিজি পিজ্জা 🍕 (মাঞ্চলাক্স 🍕)", val: "Pizza 🍕" },
+          { text: "স্পাইসি রামেন 🍜 (স্কোয়ার্টল 🍜)", val: "Spicy Ramen 🍜" }
+        ]
+      },
+      {
+        id: "game",
+        graphic: "pikachu",
+        title_en: "5. Favorite Game or Sport? 🏸⚡",
+        title_bn: "৫. প্রিয় খেলা কোনটি? 🏸⚡",
+        options_en: [
+          { text: "Badminton 🏸 (Pikachu ⚡)", val: "Badminton 🏸" },
+          { text: "Cricket 🏏 (Charizard 🔥)", val: "Cricket 🏏" },
+          { text: "Hide & Seek 🙈 (Gengar 👻)", val: "Hide & Seek 🙈" },
+          { text: "Mobile/PC Gaming 🎮 (Meowth 👾)", val: "Gaming 🎮" }
+        ],
+        options_bn: [
+          { text: "ব্যাডমিন্টন 🏸 (পিকাচু ⚡)", val: "Badminton 🏸" },
+          { text: "ক্রিকেট 🏏 (চারিজার্ড 🔥)", val: "Cricket 🏏" },
+          { text: "লুকোচুরি 🙈 (গেনগার 👻)", val: "Hide & Seek 🙈" },
+          { text: "গেমিং 🎮 (মিয়াউথ 👾)", val: "Gaming 🎮" }
+        ]
+      },
+      {
+        id: "hangout",
+        graphic: "jigglypuff",
+        title_en: "6. Dream Hangout Spot? 🌸☕",
+        title_bn: "৬. প্রিয় হ্যাংআউট স্পট কোনটি? 🌸☕",
+        options_en: [
+          { text: "Cozy Café ☕ (Jigglypuff 🌸)", val: "Cozy Café ☕" },
+          { text: "Rooftop Party 🌆 (Charizard 🔥)", val: "Rooftop Party 🌆" },
+          { text: "Park Street Food 🍢 (Squirtle 🌊)", val: "Street Food 🍢" },
+          { text: "Stay at Home 🛋️ (Snorlax 💤)", val: "Stay Home 🛋️" }
+        ],
+        options_bn: [
+          { text: "কিউট ক্যাফে ☕ (জিগলিফাফ 🌸)", val: "Cozy Café ☕" },
+          { text: "রুপটপ পার্টি 🌆 (চারিজার্ড 🔥)", val: "Rooftop Party 🌆" },
+          { text: "স্ট্রিট ফুড কর্নার 🍢 (স্কোয়ার্টল 🌊)", val: "Street Food 🍢" },
+          { text: "বাসায় থাকা 🛋️ (স্নোরল্যাক্স 💤)", val: "Stay Home 🛋️" }
+        ]
+      },
+      {
+        id: "latenight",
+        graphic: "gengar",
+        title_en: "7. What are you doing at 2 AM? 🌙📱",
+        title_bn: "৭. রাত ২ টায় তুমি কী করো? 🌙📱",
+        options_en: [
+          { text: "Overthinking Life 🧠 (Psyduck 🤯)", val: "Overthinking 🧠" },
+          { text: "Eating Midnight Snacks 🍫 (Munchlax 😋)", val: "Midnight Snacks 🍫" },
+          { text: "Deep Talks with Bestie 💬 (Pikachu ⚡)", val: "Bestie Talks 💬" },
+          { text: "Sleeping Peaceful 💤 (Snorlax 😴)", val: "Sleeping 💤" }
+        ],
+        options_bn: [
+          { text: "ওভারথিংকিং 🧠 (সাইডাক 🤯)", val: "Overthinking 🧠" },
+          { text: "মিডনাইট স্ন্যাকস খাওয়া 🍫 (মাঞ্চলাক্স 😋)", val: "Midnight Snacks 🍫" },
+          { text: "বেস্টির সাথে সিক্রেট টক 💬 (পিকাচু ⚡)", val: "Bestie Talks 💬" },
+          { text: "শান্তির ঘুম 💤 (স্নোরল্যাক্স 😴)", val: "Sleeping 💤" }
+        ]
+      },
+      {
+        id: "secret",
+        graphic: "cat",
+        title_en: "8. How good are you with Secrets? 🤐",
+        title_bn: "৮. সিক্রেট রাখতে তুমি কেমন? 🤐",
+        options_en: [
+          { text: "Vault Safe Forever 🔒 (Bulbasaur 🍃)", val: "Vault Safe 🔒" },
+          { text: "Tells Only Bestie 🤫 (Pikachu ⚡)", val: "Only Bestie 🤫" },
+          { text: "Accidentally Leaks It 🙈 (Chatot 🦜)", val: "Accidental Leak 🙈" },
+          { text: "Forgets The Secret 🧠 (Slowpoke 🧠)", val: "Forgets It 🧠" }
+        ],
+        options_bn: [
+          { text: "আজীবন সিক্রেট লক 🔒 (বালবাসর 🍃)", val: "Vault Safe 🔒" },
+          { text: "শুধু বেস্টিকে বলি 🤫 (পিকাচু ⚡)", val: "Only Bestie 🤫" },
+          { text: "ভুলবশত বলে ফেলি 🙈 (চ্যাটট 🦜)", val: "Accidental Leak 🙈" },
+          { text: "সিক্রেট নিজেই ভুলে যাই 🧠 (স্লোপোক 🧠)", val: "Forgets It 🧠" }
+        ]
+      },
+      {
+        id: "dessert",
+        graphic: "jigglypuff",
+        title_en: "9. Favorite Sweet Treat? 🍦🍫",
+        title_bn: "৯. প্রিয় মিষ্টি খাবার কোনটি? 🍦🍫",
+        options_en: [
+          { text: "Ice Cream Cone 🍦 (Squirtle 🍦)", val: "Ice Cream 🍦" },
+          { text: "Dark Chocolate 🍫 (Gengar 🖤)", val: "Dark Chocolate 🍫" },
+          { text: "Pastry Cake 🍰 (Swirlix 🍰)", val: "Pastry Cake 🍰" },
+          { text: "Traditional Sweets 🍩 (Munchlax 🍩)", val: "Sweets 🍩" }
+        ],
+        options_bn: [
+          { text: "আইসক্রিম 🍦 (স্কোয়ার্টল 🍦)", val: "Ice Cream 🍦" },
+          { text: "ডার্ক চকলেট 🍫 (গেনগার 🖤)", val: "Dark Chocolate 🍫" },
+          { text: "পেস্ট্রি কেক 🍰 (সুইরলিক্স 🍰)", val: "Pastry Cake 🍰" },
+          { text: "মিষ্টি/রসগোল্লা 🍩 (মাঞ্চলাক্স 🍩)", val: "Sweets 🍩" }
+        ]
+      },
+      {
+        id: "trust",
+        graphic: "trust_cat",
+        title_en: "10. Fake Friends Warning! Don't Block Me 🙈⚡",
+        title_bn: "১০. ফেক ফ্রেন্ড এলার্ট! ব্লক করিস না 🙈⚡",
+        options_en: [
+          { text: "Secret Leakers 🤐 (Chatot 🦜)", val: "Secret Leakers 🤐" },
+          { text: "Plan Cancellers 🏃‍♀️ (Abra 🌀)", val: "Plan Cancellers 🏃‍♀️" },
+          { text: "Food Thieves 🍕 (Munchlax 😋)", val: "Food Thieves 🍕" },
+          { text: "Me! Don't Block Me 🥺⚡ (Pikachu ⚡)", val: "That's Me! 🥺" }
+        ],
+        options_bn: [
+          { text: "সিক্রেট ফাঁসকারী 🤐 (চ্যাটট 🦜)", val: "Secret Leakers 🤐" },
+          { text: "প্ল্যান ক্যানসেলকারী 🏃‍♀️ (আব্রা 🌀)", val: "Plan Cancellers 🏃‍♀️" },
+          { text: "খাবার চোর 🍕 (মাঞ্চলাক্স 🍕)", val: "Food Thieves 🍕" },
+          { text: "আমি নিজে! ব্লক করিস না 🥺⚡", val: "That's Me! 🥺" }
+        ]
+      }
+    ];
+
+    let currentMode = 'creator';
+    let currentStep = 0;
+    
+    let hostData = { name: "", ig: "", answers: {} };
+    let takerData = { name: "", ig: "", answers: {} };
+
+    // UTF-8 Base64 En/Decoders
+    function utf8ToBase64(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+    }
+
+    function base64ToUtf8(str) {
+      return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    }
+
+    function toggleLanguage() {
+      setLanguage(currentLang === 'en' ? 'bn' : 'en');
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = TRANSLATIONS[lang];
+
+      document.getElementById('lang-btn-text').innerText = t.langBtn;
+      document.getElementById('settings-btn-text').innerText = t.settingsBtn;
+      document.getElementById('header-badge').innerText = t.badge;
+      document.getElementById('header-title').innerText = t.title;
+      document.getElementById('header-subtitle').innerText = t.subtitle;
+      document.getElementById('home-welcome-title').innerText = t.welcomeTitle;
+      document.getElementById('home-welcome-desc').innerText = t.welcomeDesc;
+      document.getElementById('btn-create-quiz').innerText = t.createBtn;
+      document.getElementById('btn-take-quiz').innerText = t.takeBtn;
+      document.getElementById('home-or-label').innerText = t.orLabel;
+      document.getElementById('create-init-title').innerText = t.createTitle;
+      document.getElementById('create-init-subtitle').innerText = t.createSub;
+      document.getElementById('lbl-host-name').innerText = t.lblHostName;
+      document.getElementById('lbl-host-ig').innerText = t.lblHostIg;
+      document.getElementById('lbl-host-ig-desc').innerText = t.lblHostIgDesc;
+      document.getElementById('btn-start-questions').innerText = t.startBtn;
+      document.getElementById('btn-back-home-1').innerText = t.backHome;
+      document.getElementById('created-title').innerText = t.createdTitle;
+      document.getElementById('created-desc').innerText = t.createdDesc;
+      document.getElementById('copy-btn-text').innerText = t.copyBtn;
+      document.getElementById('paste-title').innerText = t.pasteTitle;
+      document.getElementById('paste-subtitle').innerText = t.pasteSub;
+      document.getElementById('btn-start-guessing').innerText = t.startGuessBtn;
+      document.getElementById('btn-back-home-2').innerText = t.backHome;
+      document.getElementById('btn-back-home-3').innerText = t.backHome;
+      document.getElementById('summary-header').innerText = t.summaryHeader;
+      document.getElementById('copy-summary-btn-text').innerText = t.copySummaryBtn;
+      document.getElementById('settings-title').innerText = t.settingsTitle;
+      document.getElementById('lbl-my-quizzes').innerText = t.myQuizzes;
+
+      if (lang === 'en') {
+        document.getElementById('lang-btn-en').className = "px-3 py-1 rounded-xl text-xs font-bold bg-pink-500 text-white shadow-sm";
+        document.getElementById('lang-btn-bn').className = "px-3 py-1 rounded-xl text-xs font-bold bg-white text-pink-600 border border-pink-300";
+      } else {
+        document.getElementById('lang-btn-bn').className = "px-3 py-1 rounded-xl text-xs font-bold bg-pink-500 text-white shadow-sm";
+        document.getElementById('lang-btn-en').className = "px-3 py-1 rounded-xl text-xs font-bold bg-white text-pink-600 border border-pink-300";
+      }
+    }
+
+    function switchView(viewId) {
+      const views = ['view-home', 'view-create-init', 'view-quiz-wizard', 'view-created-code', 'view-paste-code', 'view-final-results'];
+      views.forEach(v => {
+        const el = document.getElementById(v);
+        if (v === viewId) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+
+      if(viewId === 'view-home' && window.location.hash.length > 5) {
+        checkUrlHash();
+      }
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast-msg');
+      toast.querySelector('span').innerText = text;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => toast.classList.add('opacity-0'), 2500);
+    }
+
+    function renderPokemonGraphic(graphicType) {
+      const stage = document.getElementById('q-pokemon-stage');
+      if (graphicType === 'snorlax') {
+        stage.innerHTML = `
+          <svg class="w-16 h-16 animate-float" viewBox="0 0 100 100">
+            <rect x="20" y="68" width="60" height="12" rx="2" fill="#3b82f6" />
+            <ellipse cx="50" cy="45" rx="28" ry="22" fill="#0f766e" />
+            <ellipse cx="50" cy="48" rx="20" ry="16" fill="#fef3c7" />
+            <path d="M 42 42 Q 45 40 48 42" stroke="#1e293b" stroke-width="2" fill="none" />
+            <path d="M 52 42 Q 55 40 58 42" stroke="#1e293b" stroke-width="2" fill="none" />
+          </svg>
+        `;
+      } else if (graphicType === 'charmander') {
+        stage.innerHTML = `
+          <svg class="w-16 h-16 animate-float" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="55" rx="24" ry="26" fill="#f97316" />
+            <ellipse cx="50" cy="60" rx="16" ry="18" fill="#fef08a" />
+            <circle cx="42" cy="44" r="3" fill="#1e293b" />
+            <circle cx="58" cy="44" r="3" fill="#1e293b" />
+            <path d="M 44 52 Q 50 60 56 52 Z" fill="#b91c1c" />
+          </svg>
+        `;
+      } else if (graphicType === 'cat' || graphicType === 'trust_cat') {
+        stage.innerHTML = `
+          <svg class="w-16 h-16 animate-float" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="28" fill="#f43f5e" />
+            <polygon points="28,30 20,12 38,22" fill="#f43f5e" />
+            <polygon points="72,30 80,12 62,22" fill="#f43f5e" />
+            <circle cx="40" cy="46" r="3.5" fill="#ffffff" />
+            <circle cx="60" cy="46" r="3.5" fill="#ffffff" />
+            <circle cx="40" cy="46" r="1.5" fill="#1e293b" />
+            <circle cx="60" cy="46" r="1.5" fill="#1e293b" />
+          </svg>
+        `;
+      } else {
+        stage.innerHTML = `
+          <svg class="w-16 h-16 animate-float" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="28" fill="#facc15" />
+            <circle cx="36" cy="54" r="5" fill="#ef4444" />
+            <circle cx="64" cy="54" r="5" fill="#ef4444" />
+            <circle cx="42" cy="46" r="3.5" fill="#1e293b" />
+            <circle cx="58" cy="46" r="3.5" fill="#1e293b" />
+          </svg>
+        `;
+      }
+    }
+
+    function startCreatorQuiz(e) {
+      e.preventDefault();
+      const name = document.getElementById('host-name').value.trim();
+      const ig = document.getElementById('host-ig').value.trim().replace('@', '');
+      if (!name || !ig) return;
+
+      hostData.name = name;
+      hostData.ig = ig;
+      hostData.answers = {};
+
+      currentMode = 'creator';
+      currentStep = 0;
+
+      switchView('view-quiz-wizard');
+      renderQuestion();
+    }
+
+    function startTakerQuiz(e) {
+      e.preventDefault();
+      const rawCode = document.getElementById('input-secret-code').value.trim();
+      const name = document.getElementById('taker-name').value.trim();
+      const ig = document.getElementById('taker-ig').value.trim().replace('@', '');
+
+      if (!rawCode || !name || !ig) return;
+
+      try {
+        let codeStr = rawCode;
+        if(rawCode.includes('#quiz=')) {
+          codeStr = rawCode.split('#quiz=')[1];
+        }
+
+        const decoded = JSON.parse(base64ToUtf8(decodeURIComponent(codeStr)));
+        if (!decoded.name || !decoded.answers || !decoded.ig) {
+          throw new Error("Invalid Code");
+        }
+
+        hostData = decoded;
+        takerData.name = name;
+        takerData.ig = ig;
+        takerData.answers = {};
+
+        currentMode = 'taker';
+        currentStep = 0;
+
+        switchView('view-quiz-wizard');
+        renderQuestion();
+      } catch (err) {
+        alert(currentLang === 'en' 
+          ? "Oops! That Secret Code seems invalid or broken. Please double check and try again! 🥺"
+          : "ওফস! সিক্রেট কোডটি কাজ করছে না। দয়া করে সঠিক কোডটি পেস্ট করো! 🥺");
+      }
+    }
+
+    /* RENDER TOP 10 BADGES STATUS INDICATOR */
+    function renderTopBadges() {
+      const container = document.getElementById('tracker-badges-container');
+      container.innerHTML = '';
+
+      QUESTIONS.forEach((q, idx) => {
+        const badge = document.createElement('div');
+        badge.className = "h-7 rounded-lg text-xs font-extrabold flex items-center justify-center transition-all ";
+
+        if (currentMode === 'creator') {
+          if (hostData.answers[q.id]) {
+            badge.className += "bg-pink-500 text-white shadow-sm";
+            badge.innerText = "✓";
+          } else if (idx === currentStep) {
+            badge.className += "bg-pink-200 text-pink-700 border-2 border-pink-400 animate-pulse";
+            badge.innerText = idx + 1;
+          } else {
+            badge.className += "bg-white text-pink-300 border border-pink-200";
+            badge.innerText = idx + 1;
+          }
+        } else {
+          // Taker mode with Green Ticks (✓) and Red Crosses (✗)
+          if (takerData.answers[q.id]) {
+            const isMatch = takerData.answers[q.id] === hostData.answers[q.id];
+            if (isMatch) {
+              badge.className += "bg-emerald-500 text-white shadow-sm";
+              badge.innerText = "✓";
+            } else {
+              badge.className += "bg-rose-500 text-white shadow-sm";
+              badge.innerText = "✗";
+            }
+          } else if (idx === currentStep) {
+            badge.className += "bg-pink-200 text-pink-700 border-2 border-pink-400 animate-pulse";
+            badge.innerText = idx + 1;
+          } else {
+            badge.className += "bg-white text-pink-300 border border-pink-200";
+            badge.innerText = idx + 1;
+          }
+        }
+
+        container.appendChild(badge);
+      });
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentStep];
+      const total = QUESTIONS.length;
+
+      const progressPercent = Math.round(((currentStep + 1) / total) * 100);
+      document.getElementById('quiz-step-label').innerText = `Question ${currentStep + 1} of 10`;
+      document.getElementById('quiz-progress-text').innerText = `${progressPercent}%`;
+
+      renderTopBadges();
+      renderPokemonGraphic(q.graphic);
+      
+      const qTitle = currentLang === 'en' ? q.title_en : q.title_bn;
+      
+      if (currentMode === 'creator') {
+        document.getElementById('q-title').innerText = qTitle;
+        document.getElementById('q-subtitle').innerText = currentLang === 'en' ? "Pick your preference ✨" : "তোমার পছন্দ সিলেক্ট করো ✨";
+      } else {
+        document.getElementById('q-title').innerText = `${hostData.name}'s Choice: "${qTitle}"`;
+        document.getElementById('q-subtitle').innerText = currentLang === 'en' ? `Guess ${hostData.name}'s answer! 🙈` : `${hostData.name}-এর উত্তর গেস করো! 🙈`;
+      }
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      const opts = currentLang === 'en' ? q.options_en : q.options_bn;
+
+      opts.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'w-full text-left p-3 rounded-2xl border-2 border-pink-200 hover:border-pink-400 bg-white hover:bg-pink-50 text-slate-700 font-semibold text-xs transition-all flex items-center justify-between sticker-btn shadow-sm';
+        btn.innerHTML = `
+          <span>${opt.text}</span>
+          <span class="text-pink-400 text-xs">💖</span>
+        `;
+        btn.onclick = () => selectOption(q.id, opt.val);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(qId, val) {
+      if (currentMode === 'creator') {
+        hostData.answers[qId] = val;
+      } else {
+        takerData.answers[qId] = val;
+      }
+
+      if (currentStep < QUESTIONS.length - 1) {
+        currentStep++;
+        renderQuestion();
+      } else {
+        if (currentMode === 'creator') {
+          finishCreatorQuiz();
+        } else {
+          finishTakerQuiz();
+        }
+      }
+    }
+
+    function finishCreatorQuiz() {
+      const jsonStr = JSON.stringify(hostData);
+      const encodedStr = encodeURIComponent(utf8ToBase64(jsonStr));
+      const fullLink = `${window.location.origin}${window.location.pathname}#quiz=${encodedStr}`;
+      
+      document.getElementById('generated-link-box').value = fullLink;
+      saveQuizToLocal(hostData.name, fullLink);
+
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      switchView('view-created-code');
+    }
+
+    function copyGeneratedLink() {
+      const copyText = document.getElementById("generated-link-box");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+
+      const copyBtnText = document.getElementById("copy-btn-text");
+      copyBtnText.innerText = currentLang === 'en' ? "✅ Secret Link Copied!" : "✅ লিংক কপি হয়েছে!";
+      showToast("Secret Link copied! 📋");
+
+      setTimeout(() => {
+        copyBtnText.innerText = TRANSLATIONS[currentLang].copyBtn;
+      }, 3000);
+    }
+
+    function finishTakerQuiz() {
